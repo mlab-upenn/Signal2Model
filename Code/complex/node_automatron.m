@@ -39,14 +39,11 @@ if act_node % if node is activated
         
         case 1 %Rest
            act_path=1;
-           if node_type=='AV'
-               ERP_def=ERP_min;
-            ERP_cur=ERP_def;
-           else
+           
                 % set ERP to longest
                 ERP_def=ERP_max;
                 ERP_cur=ERP_def;
-           end
+           
             
            
             % reset path conduction speed

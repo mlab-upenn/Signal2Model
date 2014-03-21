@@ -5,7 +5,7 @@ load case3_AVNRT
  data=[];
  while clk<3000
      clk=clk+1;
-     if clk==1 || mod(clk,500)==0%==1 || clk==600 || clk==940
+     if clk==1 || mod(clk,380)==0%==1 || clk==600 || clk==940
          node_table{1,10}=1;
      end
      
