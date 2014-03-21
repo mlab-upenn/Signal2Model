@@ -26,7 +26,7 @@ ERP_min=node_para{9}(1);
 ERP_max=node_para{9}(2);
 
 act_node=node_para{10};
-node_type='notAV';
+node_type='NA';
 if node_para{12}==1
     node_type='AV';
 end
@@ -38,10 +38,15 @@ if act_node % if node is activated
     switch node_state
         
         case 1 %Rest
-           
-            % set ERP to longest
-            ERP_def=ERP_max;
+           act_path=1;
+           if node_type=='AV'
+               ERP_def=ERP_min;
             ERP_cur=ERP_def;
+           else
+                % set ERP to longest
+                ERP_def=ERP_max;
+                ERP_cur=ERP_def;
+           end
             
            
             % reset path conduction speed
@@ -65,7 +70,7 @@ if act_node % if node is activated
             ERP_cur=ERP_def;
            
         case 3 %RRP
-            
+            act_path=1;
             % calculate the ratio of early activation
             ratio=RRP_cur/RRP_def;
            
@@ -91,12 +96,12 @@ if act_node % if node is activated
                 % same here, only AV node has faster trend
                 if node_type=='AV'
                    
-                        path_table{path_ind(i),6}=path_table{path_ind(i),9}*(1+ratio*3);
+                        path_table{path_ind(i),6}=round(path_table{path_ind(i),9}*(1+ratio*3));
                         path_table{path_ind(i),5}=path_table{path_ind(i),6};
                         path_table{path_ind(i),7}=path_table{path_ind(i),6};
                         path_table{path_ind(i),8}=path_table{path_ind(i),6};
                 else
-                        path_table{path_ind(i),6}=path_table{path_ind(i),9}*(1+ratio^2*3);
+                        path_table{path_ind(i),6}=round(path_table{path_ind(i),9}*(1+ratio^2*3));
                         path_table{path_ind(i),5}=path_table{path_ind(i),6};
                         path_table{path_ind(i),7}=path_table{path_ind(i),6};
                         path_table{path_ind(i),8}=path_table{path_ind(i),6};

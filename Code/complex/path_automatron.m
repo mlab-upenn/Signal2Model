@@ -24,7 +24,7 @@ ante_def=path_para{6};
 retro_cur=path_para{7};
 retro_def=path_para{8};
 persistent conflict_cur
-conflict__def=2;
+conflict_def=2;
 
 temp_act_1=0;
 temp_act_2=0;

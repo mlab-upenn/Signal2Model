@@ -32,18 +32,17 @@ function [node_table,path_table]=heart_model(node_table,path_table)
            
            %---------------------------------
            % update parameters for each node
-           [temp_node(i,:),path_table]=node_automatron(node_table(i,:),path_ind,path_table);
+           [node_table(i,:),path_table]=node_automatron(node_table(i,:),path_ind,path_table);
            
-           % create local variables for node activation signals
-           temp_act{i}=temp_node{i,9};       
+           
        end
        
       
        for i=1:size(path_table,1)
            % update parameters for each path
            [path_table(i,:),node_act_1,node_act_2]=path_automatron(path_table(i,:),node_table{path_table{i,3},11},node_table{path_table{i,4},11});
-           node_table{path_table{i,3},10}=node_act_1;
-           node_table{path_table{i,4},10}=node_act_1;
+           node_table{path_table{i,3},10}=node_act_1 || node_table{path_table{i,3},10};
+           node_table{path_table{i,4},10}=node_act_2 || node_table{path_table{i,4},10};
 %            % update the local node activation signals of the two nodes
 %            % connecting to the path by using "OR" operation
 %            if node_table{path_table{i,3},2}~=2
