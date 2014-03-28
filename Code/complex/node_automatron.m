@@ -32,7 +32,7 @@ if node_para{12}==1
 end
 
 act_path=0;
-
+% says whether path is activated
 if act_node % if node is activated
     node_para{10}=0;
     switch node_state
@@ -131,6 +131,7 @@ else % if node is not activated
                 % timer
                 Rest_cur=Rest_cur-1;
             end
+            % maintains periodicity of SA node
         case 2 %ERP
             if ERP_cur==0 %timer running out
                 % change state to RRP
@@ -141,6 +142,8 @@ else % if node is not activated
                 % timer
                 ERP_cur=ERP_cur-1;
             end
+            % keeps reducing timer during ERP until it hits zero; then
+            % change to RRP
         case 3 % RRP
             if RRP_cur==0 % timer running out
                 % change state to rest
@@ -151,6 +154,8 @@ else % if node is not activated
                 % timer
                 RRP_cur=RRP_cur-1;
             end
+            % keep reducing RRP until you get to zero, then change to rest
+            % state
     end
 end
 %--------------------------------------

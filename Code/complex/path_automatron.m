@@ -23,18 +23,20 @@ ante_cur=path_para{5};
 ante_def=path_para{6};
 retro_cur=path_para{7};
 retro_def=path_para{8};
+% naming path parameters
 persistent conflict_cur
 conflict_def=2;
-
+% 2 ms delay to make sure path doesn't backfire
 temp_act_1=0;
 temp_act_2=0;
+% variables that state whether paths will activate nodes
 switch path_state
-    case 1 % Idle
+    case 1 % Idle--no conduction along path in EITHER direction
         % if activation coming from entry node
         if node_act_1
             % Antegrade conduction
             path_state=2;
-        % if activation coming from exit node
+        % if activation coming from exit node (and in IDLE state!!)
         else if node_act_2
                 % Retrograde conduction
                 path_state=3;
@@ -50,18 +52,18 @@ switch path_state
             if ante_cur==0
                 % reset timer
                 ante_cur=ante_def;
-                % activate exit node
+                % activate exit node (says that signal arrived)
                 temp_act_2=1;
-                % go to conflict state
+                % go to conflict state to make sure path doesn't backfire
                 path_state=4;
                 conflict_cur=0;
             else
-                % timer
+                % timer counting down (i.e. signal traveling down path)
                 ante_cur=ante_cur-1;
             end
         end
             
-    case 3 % Retro
+    case 3 % Retro (same thing except other way around)
         % if activation coming from entry node
         if node_act_1
             % conflict
@@ -120,6 +122,9 @@ switch path_state
 %             retro_cur=retro_cur-1;
 %         end
         path_state=4;
+        % state 4 says that there is a conflict in the path (two signals in
+        % opposite directions)
+        % state 5 says that both nodes are activated
         conflict_cur=0;
 end
 

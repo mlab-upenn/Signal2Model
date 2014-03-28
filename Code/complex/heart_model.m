@@ -15,10 +15,6 @@ function [node_table,path_table]=heart_model(node_table,path_table)
 %            backward_speed, forward_timer_current, forward_timer_default,
 %            backward_timer_current, backward_timer_default, path_length,
 %            path_slope}
-
-       % local temp node & path table
-       temp_node={};
-       temp_path={};
        
 %        %**************************************************
 %        % a temp path table that can be updated by node automata
@@ -26,10 +22,14 @@ function [node_table,path_table]=heart_model(node_table,path_table)
 %        %***************************************************
        
        for i=1:size(node_table,1)
+           % run all nodes for one iteration (actually run simultaneously even
+           % though the code runs sequentially because we don't update the
+           % clock until after the entire heart model has run)
            %---------------------------------
            % find paths connecting to the node
            [path_ind,term_ind]=ind2sub([size(path_table,1),2],find(cell2mat(path_table(:,3:4))==i));
-           
+           % tells us how paths are structured (i.e. the starting and
+           % ending nodes for each path)
            %---------------------------------
            % update parameters for each node
            [node_table(i,:),path_table]=node_automatron(node_table(i,:),path_ind,path_table);
@@ -39,7 +39,7 @@ function [node_table,path_table]=heart_model(node_table,path_table)
        
       
        for i=1:size(path_table,1)
-           % update parameters for each path
+           % update whether node is activated given parameters for each path
            [path_table(i,:),node_act_1,node_act_2]=path_automatron(path_table(i,:),node_table{path_table{i,3},11},node_table{path_table{i,4},11});
            node_table{path_table{i,3},10}=node_act_1 || node_table{path_table{i,3},10};
            node_table{path_table{i,4},10}=node_act_2 || node_table{path_table{i,4},10};
