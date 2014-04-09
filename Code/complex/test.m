@@ -1,6 +1,9 @@
 clear all
 close all
 load case3_AVNRT
+global Tpace
+global t
+global m_state
 % loading parameters of virtual heart model (VHM)
  clk=0;
  % global clock (one iteration represents 1 ms)
@@ -9,13 +12,18 @@ load case3_AVNRT
  % state of each node
  % 1 = activated
  % 0 = inactivated
+ Tpace=0;
+ t=0;
+ m_state='waitI1';
  while clk<3000
      % run this algorithm for 3000 iterations (i.e. 3 seconds)
      clk=clk+1;
-     if clk==1 || mod(clk,380)==0 %==1 || clk==600 || clk==940
-         node_table{1,10}=1;
-         % activate node one (SA node) on the first iteration and every 380 ms thereafter
-     end
+     Tpace=Tpace+1;
+     t=t+1;
+%      if clk==1 || mod(clk,380)==0 %==1 || clk==600 || clk==940
+%          node_table{1,10}=1;
+%          % activate node one (SA node) on the first iteration and every 380 ms thereafter
+%      end
      data=[data,[node_table{1,10},node_table{2,10},node_table{4,10},node_table{7,10},node_table{3,4}]'];
      % importing the activation states of the nodes for which there are
      % probes
