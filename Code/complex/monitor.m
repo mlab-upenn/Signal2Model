@@ -10,7 +10,9 @@ global slowpath
 global AVNRT
 global terminated
 global pace_round
-condition=0;
+global A_slowed
+global AV_slowed
+condition='R0';
 pace=0;
 switch m_state
     case 'waitI1'
@@ -63,22 +65,29 @@ switch m_state
         return
     case 'wait2'
         if Tpace>=S1
-            condition=1;
+            condition='T1';
             pace=1;
             terminated=1;
             return
         end
         if A2
             m_state='wait6';
+            
             if abs(t-lastSA)>=2
-                condition=2;
+                condition='R1';
+                A_slowed=1;
+            else
+                condition='R2';
+                A_slowed=0;
             end
+            lastSA=t;
+            t=0;
         end
         return
     case 'wait6'
         if Tpace>=S1
             m_state='paceb4A6';
-            pace=1;
+            %pace=1;
             pace_round=pace_round+1;
             Tpace=0;
             return
@@ -86,31 +95,37 @@ switch m_state
         if A6
             m_state='wait7';
             slowpath=0;
+            
             if abs(t-lastAH)>5
-                condition=5;
-            else if pace_round==1
-                    condition=6;
-                else
-                    condition=7;
+                condition='R4';
+                AV_slowed=1;
+            else
+                
+                    condition='R5';
+               
+                if AV_slowed==1
+                    condition='R6';
                 end
             end
+            lastAH=t;
+            t=0;
         end
             return
     case 'paceb4A6'
-        if Tpace>=100
-            condition=3;
+        if Tpace>=200
+            condition='T2';
             terminated=1;
             return
         end
         if A6
-            condition=4;
+            condition='R3';
             slowpath=1;
             m_state='wait7';
         end
         return
     case 'wait7'
         if pace_round>=10
-            condition=8;
+            condition='T3';
             terminated=1;
             return
         end

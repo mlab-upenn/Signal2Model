@@ -1,6 +1,6 @@
-% clear all
+%clear all
 close all
-load case3_AVNRT
+load test
 global Tpace
 global t
 global m_state
@@ -12,6 +12,8 @@ global slowpath
 global AVNRT
 global terminated
 global pace_round
+global A_slowed
+global AV_slowed
 % loading parameters of virtual heart model (VHM)
  clk=0;
  % global clock (one iteration represents 1 ms)
@@ -31,21 +33,29 @@ global pace_round
  AVNRT=0;
  terminated=0;
  pace_round=0;
+ A_slowed=0;
+ AV_slowed=0;
  
- S1=350;
+ S1=330;
+ cond=[];
  while clk<10000
      % run this algorithm for 3000 iterations (i.e. 3 seconds)
      clk=clk+1;
      Tpace=Tpace+1;
      t=t+1;
      
-    
+    if clk==3560
+        1
+    end
    
     if clk==1
         node_table{1,10}=1;
     end
     if ~terminated
          [pace,condition]=monitor(S1,node_table{1,11},node_table{2,10},node_table{6,10},node_table{7,10});
+         if ~strcmp(condition,'R0')
+             cond=[cond;{clk,condition}];
+         end
     else
         break;
     end
