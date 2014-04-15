@@ -77,7 +77,11 @@ switch m_state
                 condition='R1';
                 A_slowed=1;
             else
-                condition='R2';
+                if pace_round==1
+                    condition='R2';
+                else
+                    condition='R3';
+                end
                 A_slowed=0;
             end
             lastSA=t;
@@ -97,14 +101,14 @@ switch m_state
             slowpath=0;
             
             if abs(t-lastAH)>5
-                condition='R4';
+                condition='R5';
                 AV_slowed=1;
             else
                 
-                    condition='R5';
+                    condition='R6';
                
                 if AV_slowed==1
-                    condition='R6';
+                    condition='R7';
                 end
             end
             lastAH=t;
@@ -118,7 +122,7 @@ switch m_state
             return
         end
         if A6
-            condition='R3';
+            condition='R4';
             slowpath=1;
             m_state='wait7';
         end
