@@ -40,7 +40,7 @@ global AV_slowed
  S1=340;
 
  const=[];
- for S1=300:10:460
+ for S1=340%300:10:460
      load test
       cond=[];
       clk=0;
@@ -78,21 +78,21 @@ global AV_slowed
              const=[const;sing_const];
          end
     else
-        break;
+        %break;
     end
     
      if pace
         node_table{1,10}=1;
     end
-    %data=[data,[node_table{1,11},node_table{2,10},node_table{4,10},node_table{7,10},node_table{3,4}]'];
+    data=[data,[node_table{1,11},node_table{2,10},node_table{4,10},node_table{7,10},node_table{3,4}]'];
 
     [node_table,path_table]=heart_model(node_table,path_table);
     
  end
  end
  
-%  figure
-%  axes('nextplot','add');
-%  for i=1:4%size(data,1)
-%      plot(data(i,:)-i*1.5);
-%  end
+ figure
+ axes('nextplot','add');
+ for i=1:4%size(data,1)
+     plot(data(i,:)-i*1.5);
+ end
