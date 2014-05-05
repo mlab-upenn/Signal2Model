@@ -1,4 +1,4 @@
-function sing_const=constraint(condition,S1)
+function sing_const=const_gen(condition,S1)
 sing_const=[];
 
 switch condition
@@ -21,11 +21,19 @@ switch condition
         new_const(3)=1;
         new_const(25)=S1;
         sing_const=[sing_const;new_const];
+                new_const=zeros(1,25);
+        new_const(2)=1;
+        new_const(25)=S1;
+        sing_const=[sing_const;new_const];
     case 'R3'
         %sing_const=[sing_const;{'ERP_SA_cur+RRP_SA','<',S1}];
         new_const=zeros(1,25);
         new_const(1)=1;
         new_const(3)=1;
+        new_const(25)=S1;
+        sing_const=[sing_const;new_const];
+                new_const=zeros(1,25);
+        new_const(1)=1;
         new_const(25)=S1;
         sing_const=[sing_const;new_const];
     case 'R4'
@@ -57,7 +65,11 @@ switch condition
         new_const(7)=1;
         new_const(9)=1;
         new_const(25)=S1;
-        sing_const=[sing_const;new_const];        
+        sing_const=[sing_const;new_const]; 
+        new_const=zeros(1,25);
+        new_const(7)=1;
+        new_const(25)=S1;
+        sing_const=[sing_const;new_const];
     case 'R7'
         % sing_const=[sing_const;{'ERP_F1_cur','<',S1}];
         new_const=zeros(1,25);

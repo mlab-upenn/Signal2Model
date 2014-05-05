@@ -81,15 +81,10 @@ switch condition
         new_const(25)=S1;
         sing_const=[sing_const;new_const];
                 new_const=zeros(1,25);
-        new_const(14)=-1;
-      
+        new_const(7)=-1;
+        new_const(9)=-1;
         new_const(25)=S1;
         sing_const=[sing_const;new_const];
     case 'T3'
-%         sing_const=[sing_const;{'ERP_F1_max','<',S1}];
-        new_const=zeros(1,25);
-        new_const(7)=1;
-        
-        new_const(25)=S1;
-        sing_const=[sing_const;new_const];
+        sing_const=[sing_const;{'ERP_F1_max','<',S1}];
 end
