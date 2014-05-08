@@ -40,20 +40,11 @@ global AV_slowed
  S1=340;
 
  const=[];
- para_list={'ERP_SA_min','ERP_SA_max','RRP_SA',...
-            'ERP_A_min','ERP_A_max','RRP_A',...
-            'ERP_F1_min','ERP_F1_max','RRP_F1',...
-            'ERP_F2_min','ERP_F2_max','RRP_F2',...
-            'ERP_S1_min','ERP_S1_max','RRP_S1',...
-            'ERP_S2_min','ERP_S2_max','RRP_S2',...
-            'ERP_H_min','ERP_H_max','RRP_H',...
-            'ERP_V_min','ERP_V_max','RRP_V'};
- for S1=250:10:460
+ for S1=340%300:10:460
      load test
       cond=[];
       clk=0;
      Tpace=0;
-     S1
  t=0;
  m_state='waitI1';
  lastSA=0;
@@ -65,10 +56,14 @@ global AV_slowed
  terminated=0;
  pace_round=0;
  A_slowed=0;
-  AV_slowed=0;
- while clk<10000
+ AV_slowed=0;
+ g_c=0;
+ while g_c<5000
      % run this algorithm for 3000 iterations (i.e. 3 seconds)
      clk=clk+1;
+     if node_table{2,11}
+     g_c=g_c+1
+     end
      Tpace=Tpace+1;
      t=t+1;
      
@@ -79,31 +74,36 @@ global AV_slowed
     if clk==1
         node_table{1,10}=1;
     end
-    if ~terminated
-         [pace,condition]=monitor(S1,node_table{1,11},node_table{2,10},node_table{6,10},node_table{7,10});
-         if ~strcmp(condition,'R0')
-             cond=[cond;{clk,condition}];
-             sing_const=const_gen(condition,S1);
-             const=[const;sing_const];
-         end
-    else
-        %break;
+%     if ~terminated
+%          [pace,condition]=monitor(S1,node_table{1,11},node_table{2,10},node_table{6,10},node_table{7,10});
+%          if ~strcmp(condition,'R0')
+%              cond=[cond;{clk,condition}];
+%              sing_const=constraint(condition,S1);
+%              const=[const;sing_const];
+%          end
+%     else
+%         %break;
+%     end
+%     
+%      if pace
+%         node_table{1,10}=1;
+%     end
+    %data=[data,cell2mat(node_table(:,10))];
+     if node_table{1,11}
+            data=[data;[1,clk]];
+     end
+    for i=2:size(node_table,1)
+        if node_table{i,10}
+            data=[data;[i,clk]];
+        end
     end
-    
-     if pace
-        node_table{1,10}=1;
-    end
-    data=[data,[node_table{1,11},node_table{2,10},node_table{4,10},node_table{7,10},node_table{3,4}]'];
-
     [node_table,path_table]=heart_model(node_table,path_table);
     
  end
  end
- P=Polyhedron(const(:,1:24),const(:,25));
- P.minHRep;
- save('constraints.mat','P');
+ save('data.mat','data');
 %  figure
 %  axes('nextplot','add');
-%  for i=1:4%size(data,1)
+%  for i=1:size(data,1)
 %      plot(data(i,:)-i*1.5);
 %  end
