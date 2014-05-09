@@ -58,7 +58,8 @@ global AV_slowed
  A_slowed=0;
  AV_slowed=0;
  g_c=0;
- while g_c<5000
+ ecg_data=[];
+ while g_c<500
      % run this algorithm for 3000 iterations (i.e. 3 seconds)
      clk=clk+1;
      if node_table{2,11}
@@ -98,10 +99,10 @@ global AV_slowed
         end
     end
     [node_table,path_table]=heart_model(node_table,path_table);
-    
+    ecg_data=[ecg_data,ecg_sensing(node_pos,path_table)];
  end
  end
- save('data.mat','data');
+ save('data.mat','data','ecg_data');
 %  figure
 %  axes('nextplot','add');
 %  for i=1:size(data,1)
